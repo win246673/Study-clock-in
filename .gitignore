@@ -1,0 +1,13 @@
+node_modules/
+.git/
+.DS_Store
+*.log
+.env
+.env.*
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

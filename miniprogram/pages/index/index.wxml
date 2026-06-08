@@ -1,0 +1,123 @@
+<view class="container">
+  <view class="header">
+    <view class="greeting">
+      <text class="greeting-text">今日学习打卡</text>
+      <text class="date-text">{{currentDate}}</text>
+    </view>
+    <view class="stats">
+      <view class="stat-item">
+        <text class="stat-value">{{totalDays}}</text>
+        <text class="stat-label">累计天数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{continuousDays}}</text>
+        <text class="stat-label">连续天数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{todayHours}}</text>
+        <text class="stat-label">今日时长(h)</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="add-btn" bindtap="showAddModal">
+    <text class="add-icon">+</text>
+    <text class="add-text">添加打卡</text>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">打卡记录</text>
+      <text class="section-count">共 {{records.length}} 条</text>
+    </view>
+    
+    <scroll-view scroll-y class="record-list">
+      <view 
+        wx:for="{{records}}" 
+        wx:key="_id" 
+        class="record-item"
+        bindtap="goToDetail"
+        data-id="{{item._id}}"
+      >
+        <view class="record-left">
+          <view class="record-date">
+            <text class="date-day">{{item.day}}</text>
+            <text class="date-month">{{item.month}}月</text>
+          </view>
+          <view class="record-badge" style="background-color: {{item.color}}">
+            <text class="badge-text">{{item.subject}}</text>
+          </view>
+        </view>
+        <view class="record-center">
+          <text class="record-content">{{item.content}}</text>
+          <text class="record-time">{{item.duration}}小时 · {{item.time}}</text>
+        </view>
+        <view class="record-right">
+          <text class="record-arrow">›</text>
+        </view>
+      </view>
+      
+      <view wx:if="{{records.length === 0}}" class="empty-state">
+        <text class="empty-icon">📚</text>
+        <text class="empty-text">还没有打卡记录</text>
+        <text class="empty-hint">点击上方按钮开始打卡</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="modal-overlay" wx:if="{{showModal}}" bindtap="hideModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">添加打卡记录</text>
+        <text class="modal-close" bindtap="hideModal">×</text>
+      </view>
+      
+      <view class="form-group">
+        <text class="form-label">学习科目</text>
+        <view class="subject-options">
+          <view 
+            wx:for="{{subjects}}" 
+            wx:key="name"
+            class="subject-option {{selectedSubject === item.name ? 'active' : ''}}"
+            style="border-color: {{item.color}}; color: {{selectedSubject === item.name ? item.color : '#666'}};"
+            bindtap="selectSubject"
+            data-subject="{{item.name}}"
+            data-color="{{item.color}}"
+          >
+            {{item.name}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">学习时长（小时）</text>
+        <view class="duration-options">
+          <view 
+            wx:for="{{durations}}" 
+            wx:key="value"
+            class="duration-option {{selectedDuration === item.value ? 'active' : ''}}"
+            bindtap="selectDuration"
+            data-duration="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">学习内容</text>
+        <textarea 
+          class="form-textarea" 
+          placeholder="请输入学习内容..."
+          value="{{content}}"
+          bindinput="onContentInput"
+        />
+      </view>
+
+      <view class="form-actions">
+        <view class="btn btn-secondary" bindtap="hideModal">取消</view>
+        <view class="btn btn-primary" bindtap="addRecord">确认打卡</view>
+      </view>
+    </view>
+  </view>
+</view>

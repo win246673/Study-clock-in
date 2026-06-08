@@ -1,0 +1,295 @@
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.header {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  padding: 40rpx 30rpx;
+  color: white;
+}
+
+.greeting {
+  margin-bottom: 30rpx;
+}
+
+.greeting-text {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+.date-text {
+  font-size: 28rpx;
+  opacity: 0.8;
+  margin-left: 20rpx;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.add-btn {
+  margin: -30rpx 30rpx 30rpx;
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.add-icon {
+  font-size: 48rpx;
+  color: #4CAF50;
+  margin-right: 10rpx;
+}
+
+.add-text {
+  font-size: 32rpx;
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.section {
+  padding: 0 30rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.section-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.record-list {
+  height: calc(100vh - 420rpx);
+}
+
+.record-item {
+  background: white;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.record-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 25rpx;
+}
+
+.record-date {
+  text-align: center;
+  margin-bottom: 10rpx;
+}
+
+.date-day {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+.date-month {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.record-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.badge-text {
+  font-size: 22rpx;
+  color: white;
+}
+
+.record-center {
+  flex: 1;
+  overflow: hidden;
+}
+
+.record-content {
+  font-size: 30rpx;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.record-right {
+  padding-left: 20rpx;
+}
+
+.record-arrow {
+  font-size: 40rpx;
+  color: #ccc;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 650rpx;
+  background: white;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 48rpx;
+  color: #999;
+  line-height: 1;
+}
+
+.form-group {
+  padding: 25rpx 30rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.subject-options, .duration-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.subject-option, .duration-option {
+  padding: 15rpx 30rpx;
+  border-radius: 30rpx;
+  border: 2rpx solid #ddd;
+  font-size: 26rpx;
+}
+
+.subject-option.active, .duration-option.active {
+  background: #f0f9f0;
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.form-textarea {
+  width: 100%;
+  height: 200rpx;
+  border: 2rpx solid #eee;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.form-actions {
+  display: flex;
+  gap: 20rpx;
+  padding: 25rpx 30rpx 35rpx;
+}
+
+.btn {
+  flex: 1;
+  padding: 25rpx;
+  border-radius: 12rpx;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.btn-secondary {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-primary {
+  background: #4CAF50;
+  color: white;
+}

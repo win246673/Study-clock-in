@@ -1,0 +1,109 @@
+<view class="container">
+  <view class="detail-card">
+    <view class="card-header">
+      <view class="date-section">
+        <text class="date-day">{{record.day}}</text>
+        <text class="date-month">{{record.month}}月</text>
+        <text class="date-week">{{record.weekDay}}</text>
+      </view>
+      <view class="subject-badge" style="background-color: {{record.color}}">
+        <text class="badge-text">{{record.subject}}</text>
+      </view>
+    </view>
+
+    <view class="card-body">
+      <view class="info-row">
+        <text class="info-label">学习时长</text>
+        <text class="info-value duration">{{record.duration}} 小时</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">学习时间</text>
+        <text class="info-value">{{record.time}}</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">学习内容</text>
+        <text class="info-value content">{{record.content}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="edit-section" wx:if="{{showEdit}}">
+    <view class="section-title">编辑打卡记录</view>
+    
+    <view class="form-group">
+      <text class="form-label">学习科目</text>
+      <view class="subject-options">
+        <view 
+          wx:for="{{subjects}}" 
+          wx:key="name"
+          class="subject-option {{editData.subject === item.name ? 'active' : ''}}"
+          style="border-color: {{item.color}}; color: {{editData.subject === item.name ? item.color : '#666'}};"
+          bindtap="selectEditSubject"
+          data-subject="{{item.name}}"
+          data-color="{{item.color}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">学习时长（小时）</text>
+      <view class="duration-options">
+        <view 
+          wx:for="{{durations}}" 
+          wx:key="value"
+          class="duration-option {{editData.duration === item.value ? 'active' : ''}}"
+          bindtap="selectEditDuration"
+          data-duration="{{item.value}}"
+        >
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">学习内容</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请输入学习内容..."
+        value="{{editData.content}}"
+        bindinput="onEditContentInput"
+      />
+    </view>
+  </view>
+
+  <view class="actions">
+    <view class="action-btn edit-btn" bindtap="toggleEdit" wx:if="{{!showEdit}}">
+      <text class="btn-icon">✏️</text>
+      <text class="btn-text">编辑</text>
+    </view>
+    
+    <view class="action-btns" wx:if="{{showEdit}}">
+      <view class="action-btn cancel-btn" bindtap="toggleEdit">
+        <text class="btn-text">取消</text>
+      </view>
+      <view class="action-btn confirm-btn" bindtap="updateRecord">
+        <text class="btn-text">保存</text>
+      </view>
+    </view>
+    
+    <view class="action-btn delete-btn" bindtap="showDeleteConfirm">
+      <text class="btn-icon">🗑️</text>
+      <text class="btn-text">删除</text>
+    </view>
+  </view>
+
+  <view class="modal-overlay" wx:if="{{showDeleteModal}}" bindtap="hideDeleteModal">
+    <view class="modal-content delete-modal" catchtap="stopPropagation">
+      <text class="delete-title">确认删除</text>
+      <text class="delete-message">确定要删除这条打卡记录吗？</text>
+      <view class="delete-actions">
+        <view class="btn btn-secondary" bindtap="hideDeleteModal">取消</view>
+        <view class="btn btn-danger" bindtap="deleteRecord">删除</view>
+      </view>
+    </view>
+  </view>
+</view>
