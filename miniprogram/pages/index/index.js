@@ -26,6 +26,11 @@ Page({
     this.loadRecords();
   },
 
+  onShow() {
+    this.loadCustomData();
+    this.loadRecords();
+  },
+
   loadCustomData() {
     const defaultSubjects = [
       { name: '语文', color: '#E53935' },
