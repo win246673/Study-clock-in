@@ -7,7 +7,27 @@ Page({
     todayHours: 0,
     
     showModal: false,
-    subjects: [
+    subjects: [],
+    durations: [],
+    selectedSubject: '',
+    selectedColor: '',
+    selectedDuration: '',
+    content: '',
+    
+    showSubjectManager: false,
+    showDurationManager: false,
+    newSubjectName: '',
+    newDurationValue: '',
+  },
+
+  onLoad() {
+    this.initDate();
+    this.loadCustomData();
+    this.loadRecords();
+  },
+
+  loadCustomData() {
+    const defaultSubjects = [
       { name: '语文', color: '#E53935' },
       { name: '数学', color: '#1E88E5' },
       { name: '英语', color: '#43A047' },
@@ -18,8 +38,9 @@ Page({
       { name: '地理', color: '#66BB6A' },
       { name: '编程', color: '#7B1FA2' },
       { name: '阅读', color: '#FF7043' },
-    ],
-    durations: [
+    ];
+    
+    const defaultDurations = [
       { label: '0.5小时', value: 0.5 },
       { label: '1小时', value: 1 },
       { label: '1.5小时', value: 1.5 },
@@ -28,16 +49,130 @@ Page({
       { label: '3小时', value: 3 },
       { label: '3.5小时', value: 3.5 },
       { label: '4小时', value: 4 },
-    ],
-    selectedSubject: '',
-    selectedColor: '',
-    selectedDuration: '',
-    content: '',
+    ];
+
+    try {
+      const subjectsStr = wx.getStorageSync('customSubjects') || JSON.stringify(defaultSubjects);
+      const durationsStr = wx.getStorageSync('customDurations') || JSON.stringify(defaultDurations);
+      
+      this.setData({
+        subjects: JSON.parse(subjectsStr),
+        durations: JSON.parse(durationsStr)
+      });
+    } catch (err) {
+      console.error('加载自定义数据失败:', err);
+      this.setData({
+        subjects: defaultSubjects,
+        durations: defaultDurations
+      });
+    }
   },
 
-  onLoad() {
-    this.initDate();
-    this.loadRecords();
+  saveCustomSubjects(subjects) {
+    wx.setStorageSync('customSubjects', JSON.stringify(subjects));
+    this.setData({ subjects });
+  },
+
+  saveCustomDurations(durations) {
+    wx.setStorageSync('customDurations', JSON.stringify(durations));
+    this.setData({ durations });
+  },
+
+  showSubjectManager() {
+    this.setData({ showSubjectManager: true, newSubjectName: '' });
+  },
+
+  hideSubjectManager() {
+    this.setData({ showSubjectManager: false, newSubjectName: '' });
+  },
+
+  onSubjectInput(e) {
+    this.setData({ newSubjectName: e.detail.value });
+  },
+
+  generateColor() {
+    const colors = ['#E53935', '#1E88E5', '#43A047', '#FB8C00', '#8E24AA', '#00ACC1', '#5D4037', '#66BB6A', '#7B1FA2', '#FF7043', '#EC407A', '#26C6DA', '#FFA726', '#78909C', '#5C6BC0'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  },
+
+  addSubject() {
+    const { newSubjectName, subjects } = this.data;
+    if (!newSubjectName.trim()) {
+      wx.showToast({ title: '请输入科目名称', icon: 'none' });
+      return;
+    }
+    
+    const exists = subjects.some(s => s.name === newSubjectName.trim());
+    if (exists) {
+      wx.showToast({ title: '科目已存在', icon: 'none' });
+      return;
+    }
+
+    const newSubjects = [...subjects, { name: newSubjectName.trim(), color: this.generateColor() }];
+    this.saveCustomSubjects(newSubjects);
+    this.setData({ newSubjectName: '' });
+    wx.showToast({ title: '添加成功', icon: 'success' });
+  },
+
+  deleteSubject(e) {
+    const { name } = e.currentTarget.dataset;
+    const { subjects } = this.data;
+    
+    if (subjects.length <= 1) {
+      wx.showToast({ title: '至少保留一个科目', icon: 'none' });
+      return;
+    }
+
+    const newSubjects = subjects.filter(s => s.name !== name);
+    this.saveCustomSubjects(newSubjects);
+    wx.showToast({ title: '删除成功', icon: 'success' });
+  },
+
+  showDurationManager() {
+    this.setData({ showDurationManager: true, newDurationValue: '' });
+  },
+
+  hideDurationManager() {
+    this.setData({ showDurationManager: false, newDurationValue: '' });
+  },
+
+  onDurationInput(e) {
+    this.setData({ newDurationValue: e.detail.value });
+  },
+
+  addDuration() {
+    const { newDurationValue, durations } = this.data;
+    const value = parseFloat(newDurationValue);
+    
+    if (isNaN(value) || value <= 0) {
+      wx.showToast({ title: '请输入有效时长', icon: 'none' });
+      return;
+    }
+    
+    const exists = durations.some(d => d.value === value);
+    if (exists) {
+      wx.showToast({ title: '时长已存在', icon: 'none' });
+      return;
+    }
+
+    const newDurations = [...durations, { label: `${value}小时`, value }].sort((a, b) => a.value - b.value);
+    this.saveCustomDurations(newDurations);
+    this.setData({ newDurationValue: '' });
+    wx.showToast({ title: '添加成功', icon: 'success' });
+  },
+
+  deleteDuration(e) {
+    const { value } = e.currentTarget.dataset;
+    const { durations } = this.data;
+    
+    if (durations.length <= 1) {
+      wx.showToast({ title: '至少保留一个时长', icon: 'none' });
+      return;
+    }
+
+    const newDurations = durations.filter(d => d.value !== parseFloat(value));
+    this.saveCustomDurations(newDurations);
+    wx.showToast({ title: '删除成功', icon: 'success' });
   },
 
   initDate() {
